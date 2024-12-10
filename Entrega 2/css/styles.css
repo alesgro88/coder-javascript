@@ -1,0 +1,16 @@
+.price-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.price-block span {
+    font-size: 0.75rem;
+}
+
+.modal.visible {
+    display: flex;
+    position: absolute;
+    background-color: rgb(0 0 0 / 60%);
+}
