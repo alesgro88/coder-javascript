@@ -12,68 +12,57 @@ const arrayProductos = [
     {
         id: 1,
         nombre: "Jengibre",
-        description: "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño",
+        description: "HelaDitox de Jengibre, con buenas yerbas para la panza.",
         precioKg: 200,
-        precioMedioKg: 100,
-        precioCuartoKg: 50,
         img: "img/sabores/jengibre.jpg"
     },
     {
         id: 2,
         nombre: "Lechuga",
-        description: "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño",
+        description: "HelaDitox de Lechuga, por que siempre hay que tener un sabor feo.",
         precioKg: 200,
-        precioMedioKg: 100,
-        precioCuartoKg: 50,
-        img: "img/sabores/jengibre.jpg"
+        img: "img/sabores/lechuga.jpg"
     },
     {
         id: 3,
         nombre: "Arándanos",
-        description: "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño",
+        description: "HelaDitox de smomthie de Arandanos, para el sistema linfático.",
         precioKg: 200,
-        precioMedioKg: 100,
-        precioCuartoKg: 50,
-        img: "img/sabores/jengibre.jpg"
+        img: "img/sabores/arandanos.jpg"
     },
     {
         id: 4,
         nombre: "Pera",
-        description: "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño",
+        description: "HelaDitox de Pera con miel, para las caries.",
         precioKg: 200,
-        precioMedioKg: 100,
-        precioCuartoKg: 50,
-        img: "img/sabores/jengibre.jpg"
+        img: "img/sabores/pera.jpg"
     },
     {
         id: 5,
         nombre: "Banana",
-        description: "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño",
+        description: "HelaDitox de Banana con Dulce de Leche, para el buen humor.",
         precioKg: 200,
-        precioMedioKg: 100,
-        precioCuartoKg: 50,
-        img: "img/sabores/jengibre.jpg"
+        img: "img/sabores/banana.jpg"
     },
     {
         id: 6,
         nombre: "Frutilla",
-        description: "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño",
+        description: "HelaDitox de Frutilla con crema, para vivir la buena vida por siempre.",
         precioKg: 200,
-        precioMedioKg: 100,
-        precioCuartoKg: 50,
-        img: "img/sabores/jengibre.jpg"
+        img: "img/sabores/frutilla.jpg"
     },
 ];
 
 function agregarAlCarrito(producto) {
     carrito.push(producto);
-    alert(`Agregaste ${producto.nombre} correctamente al carrito`);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    alert(`Agregaste 1 Kg ($${producto.precioKg}) de HelaDitox sabor ${producto.nombre} correctamente a tu carrito`);
 };
 
 
 function crearCard(producto) {
     const cardCol = document.createElement("div");
-    cardCol.className = "col-4";
+    cardCol.className = "col-3";
 
     const card = document.createElement("div");
     card.className = "card mb-3";
@@ -97,57 +86,14 @@ function crearCard(producto) {
     const priceBlock1 = document.createElement("div");
     priceBlock1.className = "price-block";
 
-    const priceBlock2 = document.createElement("div");
-    priceBlock2.className = "price-block";
-
-    const priceBlock3 = document.createElement("div");
-    priceBlock3.className = "price-block";
-
     const priceKg = document.createElement("span");
     priceKg.innerText = `Precio por 1 Kg - $${producto.precioKg}`;
     priceKg.className = "card-price";
-
-    const priceMedioKg = document.createElement("span");
-    priceMedioKg.innerText = `Precio por 1/2 Kg - $${producto.precioMedioKg}`;
-    priceMedioKg.className = "card-price";
-
-    const priceCuartoKg = document.createElement("span");
-    priceCuartoKg.innerText = `Precio por 1/4 Kg - $${producto.precioCuartoKg}`;
-    priceCuartoKg.className = "card-price";
 
     const btnAddKg = document.createElement("button");
     btnAddKg.innerText = "Comprar";
     btnAddKg.className = "btn btn-primary btn-sm";
     btnAddKg.addEventListener("click", () => agregarAlCarrito(producto));
-
-    const btnAddMedioKg = document.createElement("button");
-    btnAddMedioKg.innerText = "Comprar";
-    btnAddMedioKg.className = "btn btn-primary btn-sm";
-    btnAddMedioKg.addEventListener("click", () => agregarAlCarrito(producto));
-
-    const btnAddCuartoKg = document.createElement("button");
-    btnAddCuartoKg.innerText = "Comprar";
-    btnAddCuartoKg.className = "btn btn-primary btn-sm";
-    btnAddCuartoKg.addEventListener("click", () => agregarAlCarrito(producto));
-    // btnAdd.onclick = () => agregarAlCarrito(producto);
-
-    // btnAdd.addEventListener("mousedown", () => console.log("CLICK down"))
-    // btnAdd.addEventListener("mouseup", () => console.log("CLICK UP"))
-
-    // btnAdd.onmouseover = () => console.log("Mouse over");
-    // btnAdd.onmouseout = () => console.log("Mouse out");
-
-    // btnAdd.addEventListener("mousemove", () => console.log("SE MUEVE"));
-
-    // ----------------------
-
-    // const input = document.createElement("input");
-    // input.placeholder = "Ingrese algo";
-
-    // input.addEventListener("keydown", () => console.log("PRESIONÓ"))
-    // input.addEventListener("keyup", () => console.log("SOLTÓ"))
-    // input.addEventListener("change", () => console.log("CAMBIO"))
-    // input.addEventListener("input", () => console.log(input.value))
 
     cardCol.appendChild(card);
 
@@ -160,14 +106,6 @@ function crearCard(producto) {
     priceBlock1.appendChild(priceKg);
     priceBlock1.appendChild(btnAddKg);
 
-    cardBody.appendChild(priceBlock2);
-    priceBlock2.appendChild(priceMedioKg);
-    priceBlock2.appendChild(btnAddMedioKg);
-
-    cardBody.appendChild(priceBlock3);
-    priceBlock3.appendChild(priceCuartoKg);
-    priceBlock3.appendChild(btnAddCuartoKg);
-
     container.appendChild(cardCol);
 };
 
@@ -176,54 +114,72 @@ arrayProductos.forEach(el => {
 });
 
 const botonCarrito = document.getElementById("btn-carrito");
-
 botonCarrito.addEventListener("click", () => verCarrito());
 
-// function verCarrito() {
-//     console.log("Este es tu carrito");
-//     console.log(carrito);
-// };
+function modalUp() {
+    const myModal = document.getElementById('myModal');
+    myModal.className = "modal visible";
+}
+
+function deleteProduct(carrito) {
+    carrito.localStorage.removeItem();
+}
+
+function crearCarts(carrito) {
+    modalUp();
+    const modalBody = document.getElementById('modalBody');
+
+    const productCart = document.createElement("div");
+    productCart.className = "product-cart";
+
+    const img = document.createElement("img");
+    img.src = carrito.img;
+    img.alt = carrito.nombre;
+    img.className = "product-cart-img";
+
+    const title = document.createElement("h5");
+    title.innerText = carrito.nombre;
+    title.className = "product-cart-title";
+
+    const priceKg = document.createElement("p");
+    priceKg.innerText = `Precio por 1 Kg - $${carrito.precioKg}`;
+    priceKg.className = "product-cart-price";
+
+    const deleteProduct = document.createElement("button");
+    deleteProduct.innerText = "X";
+    deleteProduct.className = "btn btn-primary delete-btn";
+    // deleteProduct.addEventListener("click", () => deleteProduct(carrito));
+
+
+    modalBody.appendChild(productCart);
+    productCart.appendChild(img);
+    productCart.appendChild(title);
+    productCart.appendChild(priceKg);
+    productCart.appendChild(deleteProduct);
+}
+
+function mensajeVacio() {
+    const modalBody = document.getElementById('modalBody');
+    const mensajeVacio = document.createElement("h5");
+    mensajeVacio.innerText = "Su carrito está vacío.";
+    mensajeVacio.className = "text-center mensajeVacio";
+    modalBody.appendChild(mensajeVacio);
+}
 
 function verCarrito() {
-
     if (carrito.length > 0) {
-        console.log(carrito);
-        console.log(producto.nombre);
-        console.log(producto.img);
-
-        // const myModal = document.getElementById('myModal');
-        // myModal.className = "modal visible";
-    
-        // const modalBody = document.getElementById('modalBody');
-    
-        // const productCart = document.createElement("div");
-        // productCart.className = "product-cart";
-    
-        // const img = document.createElement("img");
-        // img.src = carrito.img;
-        // img.alt = carrito.nombre;
-        // img.className = "product-cart-img";
-    
-        // const title = document.createElement("h5");
-        // title.innerText = carrito.nombre;
-        // title.className = "product-cart-title";
-    
-        // const quantity = document.createElement("p");
-        // quantity.innerText = `${carrito.description}`;
-        // quantity.className = "card-text";
-    
-        // const productPrice = document.createElement("p");
-        // productPrice.innerText = `${carrito.description}`;
-        // productPrice.className = "card-text";
-
-        // modalBody.appendChild(productCart);
-        // productCart.appendChild(img);
-        // productCart.appendChild(title);
-        // productCart.appendChild(quantity);
-        // productCart.appendChild(productPrice);
-
+        carrito.forEach(el => {
+            crearCarts(el);
+        });
     } else {
-        console.log("vacio")
-        
+        modalUp();
+        mensajeVacio();
     }
 };
+
+function modalDown() {
+    const modalDown = document.getElementById('myModal');
+    modalDown.className = "d-none";
+}
+const modalDownBtn = document.getElementById('btnClose');
+modalDownBtn.addEventListener("click", () => modalDown());
