@@ -73,12 +73,25 @@ setTimeout(() => {
         .catch(err => console.error(err))
 }, 2000);
 
+function deleteItem(carr){
+    const newCarrito = miCarrito.filter(item => item.beanId !== carr.beanId)
+    localStorage.setItem("miCarrito", JSON.stringify(newCarrito));
+    
+    Toastify({
+        text: "Eliminaste el producto del carrito",
+        duration: 3000,
+        gravity: "bottom",
+    }).showToast();
+       
+}
+
 // Crear Carrito
 function crearCarts(carrito) {
     const modalBody = document.getElementById('modalBody');
 
     const productCart = document.createElement("div");
     productCart.className = "product-cart";
+    productCart.id = "product-cart";
 
     const image = document.createElement("img");
     image.src = carrito.imageUrl;
@@ -109,6 +122,7 @@ function crearCarts(carrito) {
 
 // Modal Up & Down
 function modalUp() {
+    modalBody.innerHTML = "";
     const myModal = document.getElementById('myModal');
     myModal.className = "modal visible";
 }
@@ -180,16 +194,18 @@ botonCarrito.addEventListener("click", () => verCarrito());
 
 // Ver Carrito
 function verCarrito() {
+    
+
     if (miCarrito.length > 0) {
         modalUp();
 
-        myModal.removeChild(miCarrito);
 
         miCarrito.forEach(el => {
             crearCarts(el);
         });
 
         limpiarCarrito();
+        checkoutCarrito();
 
     } else {
         Toastify({
