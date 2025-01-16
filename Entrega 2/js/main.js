@@ -60,7 +60,7 @@ setTimeout(() => {
                 imagen.className = "card-img-top";
                 imagen.src = urlBase;
                 imagen.alt = el.flavorName;
-                
+
                 const nombre = document.createElement("h4");
                 nombre.innerText = el.flavorName;
                 nombre.className = "card-title my-3";
@@ -89,15 +89,16 @@ setTimeout(() => {
 }, 2000);
 
 // ELiminar producto del carrito
-function deleteItem(carr){
+function deleteItem(carr) {
     let newCarrito = miCarrito.filter(item => item.beanId !== carr.beanId);
     localStorage.setItem("miCarrito", JSON.stringify(newCarrito));
-    
+
     Toastify({
         text: "Eliminaste el producto del carrito",
         duration: 3000,
+        backgroundColor: "#000",
         gravity: "bottom",
-    }).showToast();       
+    }).showToast();
 }
 
 // Crear Carrito
@@ -117,23 +118,22 @@ function crearCarts(carrito) {
     title.innerText = carrito.flavorName;
     title.className = "product-cart-title";
 
-    const priceKg = document.createElement("p");
-    priceKg.innerText = carrito.cantidad;
-    priceKg.className = "product-cart-price";
+    const productQuantity = document.createElement("p");
+    productQuantity.innerText = `${carrito.cantidad} Paquetes`;
+    productQuantity.className = "product-cart-quantity";
 
-  
+
     const deleteProduct = document.createElement("button");
-    deleteProduct.innerText = "X";
-    deleteProduct.className = "btn btn-primary delete-btn";
+    deleteProduct.innerText = "Eliminar";
+    deleteProduct.className = "btn delete-btn";
     deleteProduct.addEventListener('click', () => deleteItem(carrito));
 
     modalBody.appendChild(productCart);
     productCart.appendChild(image);
     productCart.appendChild(title);
-    productCart.appendChild(priceKg);
+    productCart.appendChild(productQuantity);
     productCart.appendChild(deleteProduct);
 }
-
 
 // Modal Up & Down
 function modalUp() {
@@ -149,14 +149,15 @@ function modalDown() {
 const modalDownBtn = document.getElementById('btnClose');
 modalDownBtn.addEventListener("click", () => modalDown());
 
+
 // Limpiar Carrito
 function limpiarCarrito() {
-    const modalBody = document.getElementById('modalBody');
+    const btnContainer = document.getElementById('btn-container');
     const limpiarCarrito = document.createElement("button");
-    limpiarCarrito.innerText = "Eliminar carrito";
-    limpiarCarrito.className = "btn btn-secondary";
-    
-    modalBody.appendChild(limpiarCarrito);
+    limpiarCarrito.innerText = "Eliminar Carrito";
+    limpiarCarrito.className = "btn delete-btn";
+
+    btnContainer.appendChild(limpiarCarrito);
 
     limpiarCarrito.addEventListener("click", () => {
         modalDown();
@@ -184,12 +185,11 @@ function limpiarCarrito() {
 
 // Checkout Carrito
 function checkoutCarrito() {
-    const modalBody = document.getElementById('modalBody');
+    const btnContainer = document.getElementById('btn-container');
     const checkoutCarrito = document.createElement("button");
     checkoutCarrito.innerText = "Comprar Carrito";
-    checkoutCarrito.className = "btn btn-success";
-    
-    modalBody.appendChild(checkoutCarrito);
+    checkoutCarrito.className = "btn btn-success btn-gradient-2";
+    btnContainer.appendChild(checkoutCarrito);
 
     checkoutCarrito.addEventListener("click", () => {
         modalDown();
@@ -214,6 +214,13 @@ function verCarrito() {
         miCarrito.forEach(el => {
             crearCarts(el);
         });
+        const modalBody = document.getElementById('modalBody');
+        const btnContainer = document.createElement("div");
+        btnContainer.id = "btn-container";
+        btnContainer.className = "btn-container my-3";
+        
+        modalBody.appendChild(btnContainer);
+
         limpiarCarrito();
         checkoutCarrito();
 
@@ -221,6 +228,7 @@ function verCarrito() {
         Toastify({
             text: "No tenés ningún producto en tu carrito",
             duration: 3000,
+            backgroundColor: "#000",
             gravity: "bottom"
         }).showToast();
     }
