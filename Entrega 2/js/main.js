@@ -73,16 +73,16 @@ setTimeout(() => {
         .catch(err => console.error(err))
 }, 2000);
 
+// ELiminar producto del carrito
 function deleteItem(carr){
-    const newCarrito = miCarrito.filter(item => item.beanId !== carr.beanId)
+    let newCarrito = miCarrito.filter(item => item.beanId !== carr.beanId);
     localStorage.setItem("miCarrito", JSON.stringify(newCarrito));
     
     Toastify({
         text: "Eliminaste el producto del carrito",
         duration: 3000,
         gravity: "bottom",
-    }).showToast();
-       
+    }).showToast();       
 }
 
 // Crear Carrito
@@ -194,16 +194,11 @@ botonCarrito.addEventListener("click", () => verCarrito());
 
 // Ver Carrito
 function verCarrito() {
-    
-
     if (miCarrito.length > 0) {
         modalUp();
-
-
         miCarrito.forEach(el => {
             crearCarts(el);
         });
-
         limpiarCarrito();
         checkoutCarrito();
 
@@ -215,8 +210,3 @@ function verCarrito() {
         }).showToast();
     }
 };
-
-document.getElementById("btn-show-pokemon").addEventListener("click", () => {
-    console.log(miCarrito)
-});
-
