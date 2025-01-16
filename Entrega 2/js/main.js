@@ -3,6 +3,7 @@ const container = document.getElementById("product-container");
 let miCarrito = JSON.parse(localStorage.getItem("miCarrito")) || [];
 console.log(miCarrito);
 
+// Agregar al Carrito
 function agregarAlCarrito(pokemon) {
 
     if (miCarrito.some(el => el.flavorName === pokemon.flavorName)) {
@@ -24,6 +25,7 @@ function agregarAlCarrito(pokemon) {
     }).showToast();
 };
 
+// Loading Inicio
 const loadingContainer = document.createElement("div");
 loadingContainer.className = "d-flex justify-content-center";
 
@@ -33,9 +35,8 @@ loadingSpinner.className = "spinner-grow text-success";
 container.appendChild(loadingContainer);
 loadingContainer.appendChild(loadingSpinner);
 
-
+// Render Productos
 setTimeout(() => {
-
     container.removeChild(loadingContainer);
 
     fetch("https://jellybellywikiapi.onrender.com/api/beans")
@@ -72,6 +73,7 @@ setTimeout(() => {
         .catch(err => console.error(err))
 }, 2000);
 
+// Crear Carrito
 function crearCarts(carrito) {
     const modalBody = document.getElementById('modalBody');
 
@@ -91,12 +93,11 @@ function crearCarts(carrito) {
     priceKg.innerText = carrito.cantidad;
     priceKg.className = "product-cart-price";
 
+  
     const deleteProduct = document.createElement("button");
     deleteProduct.innerText = "X";
     deleteProduct.className = "btn btn-primary delete-btn";
-    deleteProduct.addEventListener('click', (e) => localStorage.removeItem());
-
-    
+    deleteProduct.addEventListener('click', () => deleteItem(carrito));
 
     modalBody.appendChild(productCart);
     productCart.appendChild(image);
@@ -105,73 +106,12 @@ function crearCarts(carrito) {
     productCart.appendChild(deleteProduct);
 }
 
-const botonCarrito = document.getElementById("btn-carrito");
-botonCarrito.addEventListener("click", () => verCarrito());
 
+// Modal Up & Down
 function modalUp() {
     const myModal = document.getElementById('myModal');
     myModal.className = "modal visible";
 }
-
-function verCarrito() {
-    if (miCarrito.length > 0) {
-        modalUp();
-        
-        miCarrito.forEach(el => {
-            crearCarts(el);
-            // const title = document.createElement("h5");
-            // title.innerText = el.flavorName;
-            // modalBody.appendChild(title);
-        });
-        console.log(miCarrito);
-
-        // limpiarCarrito();
-
-    } else {
-        // modalUp();
-        console.log(miCarrito);
-
-        // mensajeVacio();
-    }
-};
-
-document.getElementById("btn-show-pokemon").addEventListener("click", () => {
-    console.log(miCarrito)
-});
-
-document.getElementById("btn-release-pokemon").addEventListener("click", () => {
-    if (miCarrito.length > 0) {
-        const totalPokemon = miCarrito.reduce((acc, el) => acc + el.cantidad, 0);
-        Swal.fire({
-            title: "Estás seguro de liberar tus pokemon?",
-            text: `No los vas a recuperar. Esto es irreversible y ya venís capturando ${miCarrito.length} especies diferentes de pokemon y un total de ${totalPokemon}`,
-            showDenyButton: true,
-            confirmButtonText: "Sí, segurísimo",
-            denyButtonText: `No, me arrepentí`,
-            icon: "warning"
-        }).then(result => {
-            if (result.isConfirmed) {
-                miCarrito = [];
-                localStorage.setItem("miCarrito", JSON.stringify([]));
-                Swal.fire({
-                    title: "LISTO",
-                    text: "Liberaste a todos tus pokemon",
-                    icon: "success",
-                })
-            } else {
-                Swal.fire({
-                    title: "Perfecto",
-                    text: "Si te arrepentís, acá estoy",
-                })
-            }
-        })
-    } else {
-        Toastify({
-            text: "No tenés ningún pokemon que liberar",
-            duration: 3000
-        }).showToast();
-    };
-});
 
 function modalDown() {
     const modalDown = document.getElementById('myModal');
@@ -179,3 +119,67 @@ function modalDown() {
 }
 const modalDownBtn = document.getElementById('btnClose');
 modalDownBtn.addEventListener("click", () => modalDown());
+
+// Limpiar Carrito
+function limpiarCarrito() {
+    const modalBody = document.getElementById('modalBody');
+    const limpiarCarrito = document.createElement("button");
+    limpiarCarrito.innerText = "Eliminar carrito";
+    limpiarCarrito.className = "btn btn-secondary";
+    
+    modalBody.appendChild(limpiarCarrito);
+
+    limpiarCarrito.addEventListener("click", () => {
+        modalDown();
+        Swal.fire({
+            title: "Esta seguro que quiere eliminar su carrito?",
+            showDenyButton: true,
+            denyButtonText: "Cancelar",
+            confirmButtonText: "Aceptar",
+            icon: "warning"
+        }).then(result => {
+            if (result.isConfirmed) {
+                miCarrito = [];
+                localStorage.setItem("miCarrito", JSON.stringify([]));
+                Swal.fire({
+                    title: "Tu carrito está vacío",
+                    icon: "success",
+                })
+            } else {
+                verCarrito();
+            }
+        })
+        modalDown();
+    });
+}
+
+// Btn Ver Carrito
+const botonCarrito = document.getElementById("btn-carrito");
+botonCarrito.addEventListener("click", () => verCarrito());
+
+// Ver Carrito
+function verCarrito() {
+    if (miCarrito.length > 0) {
+        modalUp();
+
+        myModal.removeChild(miCarrito);
+
+        miCarrito.forEach(el => {
+            crearCarts(el);
+        });
+
+        limpiarCarrito();
+
+    } else {
+        Toastify({
+            text: "No tenés ningún producto en tu carrito",
+            duration: 3000,
+            gravity: "bottom"
+        }).showToast();
+    }
+};
+
+document.getElementById("btn-show-pokemon").addEventListener("click", () => {
+    console.log(miCarrito)
+});
+
