@@ -4,14 +4,14 @@ let miCarrito = JSON.parse(localStorage.getItem("miCarrito")) || [];
 console.log(miCarrito);
 
 // Agregar al Carrito
-function agregarAlCarrito(pokemon) {
+function agregarAlCarrito(producto) {
 
-    if (miCarrito.some(el => el.flavorName === pokemon.flavorName)) {
-        let indexPoke = miCarrito.findIndex(el => el.flavorName === pokemon.flavorName);
-        miCarrito[indexPoke].cantidad += 1;
+    if (miCarrito.some(el => el.flavorName === producto.flavorName)) {
+        let indexProductos = miCarrito.findIndex(el => el.flavorName === producto.flavorName);
+        miCarrito[indexProductos].cantidad += 1;
     } else {
         miCarrito.push({
-            ...pokemon,
+            ...producto,
             cantidad: 1,
         });
     };
@@ -19,7 +19,8 @@ function agregarAlCarrito(pokemon) {
     localStorage.setItem("miCarrito", JSON.stringify(miCarrito));
 
     Toastify({
-        text: `Capturaste a ${pokemon.flavorName}`,
+        text: `Agregaste a ${producto.flavorName} al carrito`,
+        backgroundColor: "#e1106f",
         duration: 3000,
         gravity: "bottom",
     }).showToast();
@@ -42,33 +43,47 @@ setTimeout(() => {
     fetch("https://jellybellywikiapi.onrender.com/api/beans")
         .then(response => response.json())
         .then(data => {
-            const allPokemon = data.items;
-            allPokemon.forEach((el, index) => {
+            const todosProductos = data.items;
+            todosProductos.forEach((el, index) => {
                 const urlBase = el.imageUrl;
 
-                const card = document.createElement("div");
-                card.className = "card-pokemon";
+                const cardCol = document.createElement("div");
+                cardCol.className = "col-3";
 
-                const nombre = document.createElement("p");
-                nombre.innerText = el.flavorName;
+                const card = document.createElement("div");
+                card.className = "card mb-3";
+
+                const cardBody = document.createElement("div");
+                cardBody.className = "card-body";
 
                 const imagen = document.createElement("img");
-                imagen.className = "img-pokemon";
+                imagen.className = "card-img-top";
                 imagen.src = urlBase;
                 imagen.alt = el.flavorName;
+                
+                const nombre = document.createElement("h4");
+                nombre.innerText = el.flavorName;
+                nombre.className = "card-title my-3";
+
+                const descripcion = document.createElement("p");
+                descripcion.innerText = el.description;
+                descripcion.className = "card-text";
 
                 const boton = document.createElement("button");
-                boton.innerText = "Capturar";
-                boton.className = "btn btn-secondary"
+                boton.innerText = "Agregar Paquete";
+                boton.className = "btn btn-success btn-gradient-1 w-100"
                 boton.addEventListener("click", () => agregarAlCarrito(el));
 
-                card.appendChild(nombre)
-                card.appendChild(imagen)
-                card.appendChild(boton)
+                cardCol.appendChild(card);
+                card.appendChild(cardBody);
+                cardBody.appendChild(imagen);
+                cardBody.appendChild(nombre);
+                cardBody.appendChild(descripcion);
+                cardBody.appendChild(boton);
 
-                document.getElementById("container").appendChild(card);
+                document.getElementById("product-container").appendChild(cardCol);
             })
-            document.getElementById("container").className = "container-pokemon";
+            document.getElementById("container").className = "container";
         })
         .catch(err => console.error(err))
 }, 2000);
